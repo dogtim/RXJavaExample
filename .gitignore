@@ -1,0 +1,55 @@
+*.DS_Store
+*.class
+*.classpath
+*.dex
+*.eml
+*.iml
+*.project
+*.swp
+*.settings
+*.classpath
+*.project
+**/merged_proguard*
+.idea/*
+.gradle/
+.metadata
+/releases
+bin/
+gen/
+build/
+captures/
+local.properties
+
+# crashlytics generated file
+com_crashlytics_export_strings.xml
+
+# fabric secret number
+CollageProtoApp/fabric.properties
+
+# HP version number
+hpprint_ver.txt
+
+# CMake and Makefile.
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+*.cmake
+Makefile
+install_manifest.txt
+UnitTest
+
+# Microsoft Visual Code
+.vscode
+
+#C++
+*/.externalNativeBuild/*
+*/.cxx/*
+
+# fastlane specific
+fastlane/report.xml
+# deliver temporary files
+fastlane/Preview.html
+# snapshot generated screenshots
+fastlane/screenshots
+# scan temporary files
+fastlane/test_output
