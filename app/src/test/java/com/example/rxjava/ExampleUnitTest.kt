@@ -3,12 +3,12 @@ package com.example.rxjava
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.internal.operators.observable.ObservableFromIterable
-import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.TestScheduler
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -87,10 +87,6 @@ class ExampleUnitTest {
         isValidExpirationDate.subscribe(observer)
     }
 
-    private fun flatmap1() {
-
-    }
-
     fun makeFlatMap(source: Observable<String>, scheduler: TestScheduler): Observable<String> {
         var delayHook = true
         val result = source.flatMap { s ->
@@ -162,7 +158,7 @@ class ExampleUnitTest {
 
 
     /**
-     * The switchMap operator is similar to flatMap, except that it retains the result of only the latest observable, discarding the previous ones.
+     * The switchMap operator is similar to flatMap, except that it retains the **result of only the latest observable**, discarding the previous ones.
      *
      * using the supplied function and then merges all the observables into a single observable.
      *
@@ -174,5 +170,30 @@ class ExampleUnitTest {
                 "books MockItem1", "books MockItem2"
             )
         )
+    }
+
+    /**
+     * Code from [flatmap-switchmap-and-concatmap-differences](https://medium.com/appunite-edu-collection/rxjava-flatmap-switchmap-and-concatmap-differences-examples-6d1f3ff88ee0)
+     * ConcatMap works almost the same as flatMap, but preserves the order of items.
+     */
+    @Test
+    fun concateMap() {
+        val items: List<String> = listOf("a", "b", "c", "d", "e", "f")
+        val scheduler = TestScheduler()
+        var result = ""
+        Observable.fromIterable(items)
+            .concatMap { s ->
+                val delay = Random().nextInt(10)
+                Observable.just(s.toString() + "x")
+                    .delay(delay.toLong(), TimeUnit.SECONDS, scheduler)
+            }
+            .toList()
+            .doOnSuccess {
+                // If use the flatMap, you will get random order list rather than order list as concateMap
+                result = it.joinToString(" ")
+            }.subscribe()
+
+        scheduler.advanceTimeBy(1, TimeUnit.MINUTES)
+        assertEquals(result, "ax bx cx dx ex fx")
     }
 }
