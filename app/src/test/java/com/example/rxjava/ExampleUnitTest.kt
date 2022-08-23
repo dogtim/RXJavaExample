@@ -3,12 +3,12 @@ package com.example.rxjava
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.observers.TestObserver
 import io.reactivex.rxjava3.schedulers.TestScheduler
+import io.reactivex.rxjava3.subscribers.TestSubscriber
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Assert
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -195,5 +195,38 @@ class ExampleUnitTest {
 
         scheduler.advanceTimeBy(1, TimeUnit.MINUTES)
         assertEquals(result, "ax bx cx dx ex fx")
+    }
+
+    @Test
+    fun theTestObserver() {
+        val observable: Observable<String> = Observable.error(RuntimeException())
+        val testSubscriber: TestObserver<String> = TestObserver.create()
+
+        observable.subscribe(testSubscriber)
+
+        testSubscriber.assertError(RuntimeException::class.java)
+    }
+
+    @Test
+    fun theTestObserverAdavanced() {
+        val items: List<String> = listOf("a", "b", "c", "d", "e", "f")
+        val testSubscriber: TestObserver<List<String>> = TestObserver.create()
+        val scheduler = TestScheduler()
+        var result = ""
+        Observable.fromIterable(items)
+            .concatMap { s ->
+                val delay = Random().nextInt(10)
+                Observable.just(s.toString() + "x")
+                    .delay(delay.toLong(), TimeUnit.SECONDS, scheduler)
+            }
+            .toList()
+            .doOnSuccess {
+                // If use the flatMap, you will get random order list rather than order list as concateMap
+                result = it.joinToString(" ")
+                assertEquals(result, "ax bx cx dx ex fx")
+            }.subscribe()
+
+        scheduler.advanceTimeBy(1, TimeUnit.MINUTES)
+        testSubscriber.assertNoErrors()
     }
 }
