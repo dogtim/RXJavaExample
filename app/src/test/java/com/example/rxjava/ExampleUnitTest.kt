@@ -2,10 +2,11 @@ package com.example.rxjava
 
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.observers.TestObserver
 import io.reactivex.rxjava3.schedulers.TestScheduler
-import io.reactivex.rxjava3.subscribers.TestSubscriber
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
@@ -228,5 +229,29 @@ class ExampleUnitTest {
 
         scheduler.advanceTimeBy(1, TimeUnit.MINUTES)
         testSubscriber.assertNoErrors()
+    }
+
+    @Test
+    fun testSingle() {
+        //Create the observable
+        val testSingle: Single<String> = Single.just("Hello World")
+        var result = ""
+        //Create an observer
+        val disposable: Disposable = testSingle
+            //.delay(2, TimeUnit.SECONDS, Schedulers.io())
+            .subscribeWith(
+                object : DisposableSingleObserver<String?>() {
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+
+                    override fun onSuccess(t: String?) {
+                        if (t != null) {
+                            result = t
+                        }
+                    }
+                })
+        // Thread.sleep(3000)
+        assertEquals("Hello World", result)
     }
 }
