@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.schedulers.TestScheduler
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -48,6 +49,47 @@ class ExampleUnitTest {
             }
         }
         observables.subscribe(observer)
+    }
+
+    @Test
+    fun filter() {
+        var isFailed = false
+        val creditCardExpirationDate = Observable.create<String> { emitter ->
+            emitter.onNext("Kotlin")
+            emitter.onNext("Java")
+            emitter.onNext("Python")
+            emitter.onNext("Javascript")
+            emitter.onNext("Go")
+            emitter.onNext("C")
+            emitter.onNext("Rust")
+            emitter.onComplete()
+        }
+
+        val observer: Observer<String> = object : Observer<String> {
+            override fun onSubscribe(d: Disposable) {
+                println(d)
+            }
+
+            override fun onNext(s: String) {
+                println(s)
+                if (s.length <= 3) {
+                    isFailed = true
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                println(e.localizedMessage)
+            }
+
+            override fun onComplete() {
+                println("complete")
+            }
+        }
+        creditCardExpirationDate.filter {
+            it.length > 4
+        }.subscribe(observer)
+
+        assertFalse(isFailed)
     }
 
     @Test
