@@ -4,9 +4,12 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.BiFunction
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import io.reactivex.rxjava3.observers.TestObserver
 import io.reactivex.rxjava3.schedulers.TestScheduler
+import io.reactivex.rxjava3.subjects.PublishSubject
+import io.reactivex.rxjava3.subjects.Subject
 import org.hamcrest.CoreMatchers.hasItems
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
@@ -295,5 +298,40 @@ class ExampleUnitTest {
                 })
         // Thread.sleep(3000)
         assertEquals("Hello World", result)
+    }
+
+    @Test
+    fun testWithLatestFrom() {
+        val subject: Subject<String> = PublishSubject.create()
+        val publishSubject: Subject<String> = PublishSubject.create()
+        subject.onNext("a")
+        val observable = publishSubject.withLatestFrom(subject
+        ) { s, s2 -> s + s2 }
+
+        subject.onNext("b")
+        val observer: Observer<String> = object : Observer<String> {
+            override fun onSubscribe(d: Disposable) {
+                println("onSubscribe")
+            }
+
+            override fun onNext(s: String) {
+                println("Value is $s")
+            }
+
+            override fun onError(e: Throwable) {
+                println(e.localizedMessage)
+            }
+
+            override fun onComplete() {
+                println("complete")
+            }
+        }
+        observable.subscribe(observer)
+        publishSubject.onNext("c")
+        subject.onNext("d")
+        publishSubject.onNext("e")
+        publishSubject.onNext("f")
+        publishSubject.onNext("g")
+        subject.onNext("h")
     }
 }
