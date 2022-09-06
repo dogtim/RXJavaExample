@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">RXJava</string>
+    <string name="dummy">Dummy</string>
+    <string name="title">Title</string>
+    <string name="message">message</string>
+    <string name="show_alert">Show alert</string>
 </resources>
