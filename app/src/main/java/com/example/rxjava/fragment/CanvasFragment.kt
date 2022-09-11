@@ -21,7 +21,7 @@ class CanvasFragment : Fragment() {
             val type = it.getInt(argumentOfViewType)
             return when(UseCase.values()[type]) {
                 UseCase.FILL_FORM -> View(context)
-                UseCase.TODO_1 -> View(context)
+                UseCase.TIC_TAC_TOE -> View(context)
                 UseCase.TODO_2 -> View(context)
                 UseCase.TODO_3 -> View(context)
             }

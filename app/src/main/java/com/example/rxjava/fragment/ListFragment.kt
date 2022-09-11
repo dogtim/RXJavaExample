@@ -1,5 +1,6 @@
 package com.example.rxjava.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rxjava.R
 import com.example.rxjava.databinding.FragmentRecycleBinding
+import com.example.rxjava.tictactoe.TicTacToeActivity
 
 class CanvasListFragment : Fragment() {
 
@@ -43,7 +46,7 @@ class CanvasListFragment : Fragment() {
 
 }
 
-enum class UseCase { FILL_FORM, TODO_1, TODO_2, TODO_3 }
+enum class UseCase { FILL_FORM, TIC_TAC_TOE, TODO_2, TODO_3 }
 
 private class UseCaseAdapter(private val entries: List<UseCase>, private val activity: AppCompatActivity) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -66,6 +69,10 @@ private class UseCaseAdapter(private val entries: List<UseCase>, private val act
                             replace<FillFormFragment>(R.id.canvas_fragment_container)
                             addToBackStack(null)
                         }
+                    }
+                    UseCase.TIC_TAC_TOE -> {
+                        val intent = Intent(activity, TicTacToeActivity::class.java)
+                        activity.startActivity(intent)
                     }
                     else -> {
                         val bundle = bundleOf(CanvasFragment.argumentOfViewType to entry.ordinal)
