@@ -11,15 +11,7 @@ class TicTacToeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createFragment()
-    }
-
-    private fun createFragment() {
-        setContentView(R.layout.activity_usecase)
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            add<CanvasListFragment>(R.id.canvas_fragment_container)
-        }
+        setContentView(R.layout.activity_tictactoe)
     }
 
 }
