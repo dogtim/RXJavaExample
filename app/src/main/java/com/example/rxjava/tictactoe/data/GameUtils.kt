@@ -1,8 +1,6 @@
 package com.example.rxjava.tictactoe.data
 
-import com.example.rxjava.R
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 
 object GameUtils {
     fun calculateGameStatus(gameGrid: GameGrid): GameStatus {
@@ -94,7 +92,7 @@ object GameUtils {
                 }
     }
 
-    fun dropMarker(gridPosition: GridPosition, gameGrid: GameGrid): GridPosition {
+    private fun dropMarker(gridPosition: GridPosition, gameGrid: GameGrid): GridPosition {
         var i: Int = gameGrid.height - 1
         while (i >= -1) {
             if (i == -1) {

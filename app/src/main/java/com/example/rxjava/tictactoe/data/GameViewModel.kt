@@ -5,30 +5,26 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.subjects.BehaviorSubject
 
-class GameViewModel(val activeGameStateObservable: Observable<GameState>,
-                    val putActiveGameState: Consumer<GameState>?,
-                    val touchEventObservable: Observable<GridPosition>?) {
+class GameViewModel(
+    private val activeGameStateObservable: Observable<GameState>,
+    private val putActiveGameState: Consumer<GameState>?,
+    private val touchEventObservable: Observable<GridPosition>?) {
     private val subscriptions = CompositeDisposable()
 
     private val gameStateSubject = BehaviorSubject.create<GameState>()
 
-    private lateinit var playerInTurnObservable: Observable<GameSymbol>
-    private lateinit var gameStatusObservable: Observable<GameStatus>
-
-    init {
-        playerInTurnObservable = activeGameStateObservable
-            .map<Any>(GameState::lastPlayedSymbol)
-            .map { symbol: Any ->
-                if (symbol === GameSymbol.BLACK) {
-                    return@map GameSymbol.RED
-                } else {
-                    return@map GameSymbol.BLACK
-                }
+    private var playerInTurnObservable: Observable<GameSymbol> = activeGameStateObservable
+        .map<Any>(GameState::lastPlayedSymbol)
+        .map { symbol: Any ->
+            if (symbol === GameSymbol.BLACK) {
+                return@map GameSymbol.RED
+            } else {
+                return@map GameSymbol.BLACK
             }
-        gameStatusObservable = activeGameStateObservable
-            .map(GameState::gameGrid)
-            .map(GameUtils::calculateGameStatus)
-    }
+        }
+    private var gameStatusObservable: Observable<GameStatus> = activeGameStateObservable
+        .map(GameState::gameGrid)
+        .map(GameUtils::calculateGameStatus)
 
     fun getGameStatus(): Observable<GameStatus> {
         return gameStatusObservable

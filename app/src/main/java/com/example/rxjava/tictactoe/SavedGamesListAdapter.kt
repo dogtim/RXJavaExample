@@ -41,8 +41,7 @@ class SavedGamesListAdapter : ArrayAdapter<SavedGame?> {
         resource: Int,
         textViewResourceId: Int,
         objects: List<SavedGame?>
-    ) : super(context, resource, textViewResourceId, objects) {
-    }
+    ) : super(context, resource, textViewResourceId, objects)
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var convertView = convertView
