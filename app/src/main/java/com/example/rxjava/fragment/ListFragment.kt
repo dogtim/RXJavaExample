@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rxjava.R
 import com.example.rxjava.databinding.FragmentRecycleBinding
-import com.example.rxjava.tictactoe.TicTacToeActivity
+import com.example.rxjava.tictactoe.activity.TicTacToeActivity
 
 class CanvasListFragment : Fragment() {
 

@@ -15,10 +15,8 @@ class InteractiveGameGridView: GameGridView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr)
 
     fun getTouchesOnGrid(): Observable<GridPosition>? {
-        // TODO
-
         val userTouchEventObservable: Observable<MotionEvent> = RxView.touches(this)
-            .filter { ev -> ev.getAction() === MotionEvent.ACTION_UP }
+            .filter { ev -> ev.action == MotionEvent.ACTION_UP }
         return userTouchEventObservable
             .map { ev: MotionEvent ->
                 getGridPosition(

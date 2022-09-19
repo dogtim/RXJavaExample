@@ -13,7 +13,7 @@ class PersistedGameStore(private val sharedPreferences: SharedPreferences) {
     private val gson: Gson = Gson()
     private var savedGames: MutableList<SavedGame> = ArrayList<SavedGame>()
     private val savedGamesSubject: PublishSubject<List<SavedGame>> =
-        PublishSubject.create<List<SavedGame>>()
+        PublishSubject.create()
     val savedGamesStream: Observable<List<SavedGame>>
         get() = savedGamesSubject.hide().startWith(savedGames)
 

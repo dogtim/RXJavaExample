@@ -1,4 +1,4 @@
-package com.example.rxjava.tictactoe
+package com.example.rxjava.tictactoe.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.example.rxjava.MainActivity
 import com.example.rxjava.R
+import com.example.rxjava.tictactoe.GameApplication
+import com.example.rxjava.tictactoe.InteractiveGameGridView
+import com.example.rxjava.tictactoe.PlayerView
 import com.example.rxjava.tictactoe.data.GameModel
 import com.example.rxjava.tictactoe.data.GameStatus
 import com.example.rxjava.tictactoe.data.GameViewModel
@@ -37,20 +39,20 @@ class TicTacToeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tictactoe)
 
         // Get the shared GameModel
-        gameModel = (getApplication() as GameApplication).getGameModel()
+        gameModel = (application as GameApplication).getGameModel()
         resolveViews()
         createViewModel()
         makeViewBinding()
     }
 
     private fun resolveViews() {
-        gameGridView = findViewById(R.id.grid_view) as InteractiveGameGridView
-        playerInTurnImageView = findViewById(R.id.player_in_turn_image_view) as PlayerView
+        gameGridView = findViewById(R.id.grid_view)
+        playerInTurnImageView = findViewById(R.id.player_in_turn_image_view)
         winnerView = findViewById(R.id.winner_view)
-        winnerTextView = findViewById(R.id.winner_text_view) as TextView
-        newGameButton = findViewById(R.id.new_game_button) as Button
-        saveGameButton = findViewById(R.id.save_game_button) as Button
-        loadGameButton = findViewById(R.id.load_game_button) as Button
+        winnerTextView = findViewById(R.id.winner_text_view)
+        newGameButton = findViewById(R.id.new_game_button)
+        saveGameButton = findViewById(R.id.save_game_button)
+        loadGameButton = findViewById(R.id.load_game_button)
     }
 
     private fun createViewModel() {
@@ -66,13 +68,13 @@ class TicTacToeActivity : AppCompatActivity() {
         // Handle new game, saving and loading games
         viewSubscriptions.add(
             RxView.clicks(newGameButton)
-            .subscribe { ignore -> gameModel.newGame() }
+            .subscribe { gameModel.newGame() }
         )
         viewSubscriptions.add(RxView.clicks(saveGameButton)
-            .subscribe { ignore -> gameModel.saveActiveGame() }
+            .subscribe { gameModel.saveActiveGame() }
         )
         viewSubscriptions.add(RxView.clicks(loadGameButton)
-            .subscribe { ignore -> showLoadGameActivity() }
+            .subscribe { showLoadGameActivity() }
         )
 
         // Bind the View Model

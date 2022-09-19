@@ -2,7 +2,6 @@ package com.example.rxjava.tictactoe.data
 
 import java.util.*
 
-
 class GameGrid() {
     var width: Int = 0
     var height: Int = 0

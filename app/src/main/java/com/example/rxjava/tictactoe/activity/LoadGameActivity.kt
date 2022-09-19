@@ -1,4 +1,4 @@
-package com.example.rxjava.tictactoe
+package com.example.rxjava.tictactoe.activity
 
 import android.os.Bundle
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.rxjava.R
+import com.example.rxjava.tictactoe.GameApplication
+import com.example.rxjava.tictactoe.SavedGamesListAdapter
 import com.example.rxjava.tictactoe.data.GameModel
 import com.example.rxjava.tictactoe.data.SavedGame
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,15 +21,14 @@ class LoadGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_load_game)
-        setTitle("Load Previous Game")
-
+        title = "Load Previous Game"
         // Get the shared GameModel
-        gameModel = (getApplication() as GameApplication).getGameModel()
+        gameModel = (application as GameApplication).getGameModel()
         val listAdapter = SavedGamesListAdapter(this, android.R.layout.simple_list_item_1)
-        val listView = findViewById(R.id.saved_games_list) as ListView
+        val listView: ListView = findViewById(R.id.saved_games_list)
         listView.adapter = listAdapter
         listView.onItemClickListener =
-            OnItemClickListener { adapterView: AdapterView<*>?, view: View, i: Int, l: Long ->
+            OnItemClickListener { _: AdapterView<*>?, view: View, _: Int, _: Long ->
                 val savedGame: SavedGame = view.tag as SavedGame
                 gameModel.putActiveGameState(savedGame.gameState)
                 finish()

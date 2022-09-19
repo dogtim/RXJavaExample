@@ -18,27 +18,27 @@ open class GameGridView : View {
     constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int): super(context, attrs, defStyleAttr) {
-        linePaint.setColor(Color.BLACK)
-        linePaint.setStrokeWidth(8f)
-        winnerLinePaint.setColor(Color.BLACK)
-        winnerLinePaint.setStrokeWidth(30f)
+        linePaint.color = Color.BLACK
+        linePaint.strokeWidth = 8.0f
+        winnerLinePaint.color = Color.BLACK
+        winnerLinePaint.strokeWidth = 30f
         bitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        bitmapSrcRect = Rect(0, 0, blackPlayerBitmap.getWidth(), blackPlayerBitmap.getHeight())
+        bitmapSrcRect = Rect(0, 0, blackPlayerBitmap.width, blackPlayerBitmap.height)
     }
 
-    val TAG = GameGridView::class.java.simpleName
+    private val TAG = GameGridView::class.java.simpleName
     var data: FullGameState? = null
         set(value) {
             field = value
             invalidate()
         }
-    var _width = 0
-    var _height = 0
+    private var _width = 0
+    private var _height = 0
     var linePaint: Paint = Paint()
     var winnerLinePaint: Paint = Paint()
     var bitmapPaint: Paint = Paint()
-    var blackPlayerBitmap: Bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_black_circle)
-    var redPlayerBitmap: Bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.symbol_red_circle)
+    var blackPlayerBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.symbol_black_circle)
+    private var redPlayerBitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.symbol_red_circle)
     var bitmapSrcRect: Rect? = null
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -90,13 +90,13 @@ open class GameGridView : View {
                 )
                 if (symbol === GameSymbol.BLACK) {
                     canvas.drawBitmap(
-                        blackPlayerBitmap!!,
+                        blackPlayerBitmap,
                         bitmapSrcRect, dst,
                         bitmapPaint
                     )
                 } else if (symbol === GameSymbol.RED) {
                     canvas.drawBitmap(
-                        redPlayerBitmap!!,
+                        redPlayerBitmap,
                         bitmapSrcRect, dst,
                         bitmapPaint
                     )
@@ -115,12 +115,12 @@ open class GameGridView : View {
         var i = 0
         while (i <= gridWidth) {
             Log.d(TAG, "line $i")
-            canvas.drawLine(i * tileWidth, 0f, i * tileWidth, _height.toFloat(), linePaint!!)
+            canvas.drawLine(i * tileWidth, 0f, i * tileWidth, _height.toFloat(), linePaint)
             i++
         }
         var n = 0
         while (n <= gridHeight) {
-            canvas.drawLine(0f, n * tileHeight, _width.toFloat(), n * tileHeight, linePaint!!)
+            canvas.drawLine(0f, n * tileHeight, _width.toFloat(), n * tileHeight, linePaint)
             n++
         }
     }

@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.rxjava.tictactoe.LoadGameActivity">
+    tools:context="com.example.rxjava.tictactoe.activity.LoadGameActivity">
 
     <ListView
         android:id="@+id/saved_games_list"

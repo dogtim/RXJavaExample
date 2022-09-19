@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".tictactoe.TicTacToeActivity"
+            android:name=".tictactoe.activity.TicTacToeActivity"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".tictactoe.LoadGameActivity"
+            android:name=".tictactoe.activity.LoadGameActivity"
             android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
